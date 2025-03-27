@@ -90,7 +90,7 @@ export function formatWeapons(
 
         if (weapon.sockets?.socketEntries) {
             const filteredSockets = [0, 1, 2, 3, 4, 8]
-                .map(index => weapon.sockets.socketEntries[index])
+                .map(index => weapon.sockets?.socketEntries?.[index])
                 .filter(socket => socket !== undefined);
 
             filteredSockets.forEach((socket, index) => {
@@ -114,7 +114,7 @@ export function formatWeapons(
                                     return {
                                         name: plugItem.displayProperties?.name ?? "Desconocido",
                                         icon: plugItem.displayProperties?.icon ?? "",
-                                        itemTypeDisplayName: plugItem.itemTypeDisplayName ?? "Desconocido",
+                                        itemTypeDisplayName: typeof plugItem.itemTypeDisplayName === 'string' ? plugItem.itemTypeDisplayName : "Desconocido",
                                         description: plugItem.displayProperties?.description ?? "",
                                         highlighted: plugItem.hash === perkHash1 || plugItem.hash === perkHash2
                                     };
@@ -123,7 +123,7 @@ export function formatWeapons(
                             }).filter(perk => perk !== null);
 
                             sockets.push({
-                                itemTypeDisplayName: perks.length > 0 ? perks[0].itemTypeDisplayName : "Desconocido",
+                                itemTypeDisplayName: perks.length > 0 && typeof perks[0]?.itemTypeDisplayName === 'string' ? perks[0].itemTypeDisplayName : "Desconocido",
                                 perks
                             });
                         }
