@@ -18,6 +18,12 @@ interface Item {
     [key: string]: any;
 }
 
+interface PlugSet {
+    reusablePlugItems: Array<{
+        plugItemHash: string;
+    }>;
+}
+
 export function normalizeText(text: string): string {
     return text
         .normalize("NFD")
@@ -34,7 +40,12 @@ export function searchPerk(perkName: string, items: Record<string, Item>): Item 
     );
 }
 
-export function findWeaponsWithPerks(perkHash1: string, perkHash2: string, items: Record<string, Item>, plugSets: Record<string, any>): Item[] {
+export function findWeaponsWithPerks(
+    perkHash1: string,
+    perkHash2: string,
+    items: Record<string, Item>,
+    plugSets: Record<string, PlugSet>
+): Item[] {
     return Object.values(items).filter(item => {
         const hasPerks = (slot1: number, slot2: number) =>
             item.sockets?.socketEntries?.[slot1]?.randomizedPlugSetHash &&
@@ -46,7 +57,13 @@ export function findWeaponsWithPerks(perkHash1: string, perkHash2: string, items
     });
 }
 
-export function formatWeapons(weapons, items, plugSets, perkHash1, perkHash2) {
+export function formatWeapons(
+    weapons: Item[],
+    items: Record<string, Item>,
+    plugSets: Record<string, PlugSet>,
+    perkHash1: string,
+    perkHash2: string
+) {
     return weapons.map(weapon => {
         const sockets = [];
 
