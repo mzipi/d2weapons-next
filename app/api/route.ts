@@ -21,8 +21,8 @@ export async function GET(req: Request) {
             return NextResponse.json({ error: "Perk no encontrado o no es de tier 'Común'" }, { status: 404 });
         }
 
-        const perkHash1 = perkItem1.hash;
-        const perkHash2 = perkItem2.hash;
+        const perkHash1: string = String(perkItem1.hash);
+        const perkHash2: string = String(perkItem2.hash);
 
         const weaponsWithBothPerks = findWeaponsWithPerks(perkHash1, perkHash2, items, plugSets);
         const filteredWeapons = formatWeapons(weaponsWithBothPerks, items, plugSets, perkHash1, perkHash2);
