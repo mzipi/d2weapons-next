@@ -117,7 +117,7 @@ export async function GET(req) {
                 plugSets[item.sockets.socketEntries[3].randomizedPlugSetHash]?.reusablePlugItems.some(plug => plug.plugItemHash === perkHash1) &&
                 plugSets[item.sockets.socketEntries[4].randomizedPlugSetHash]?.reusablePlugItems.some(plug => plug.plugItemHash === perkHash2)
             );
-        
+
             const perkOrder2 = (
                 item.itemType === 3 &&
                 item.sockets?.socketEntries?.[3]?.randomizedPlugSetHash &&
@@ -150,6 +150,8 @@ export async function GET(req) {
                                 const perks = plugSet.reusablePlugItems.map(plug => {
                                     const plugItem = items[plug.plugItemHash];
 
+                                    console.log(plugItem);
+
                                     if (plugItem) {
                                         if ((index === 3 || index === 4) && plugItem.inventory?.tierTypeName !== "Común") {
                                             return null;
@@ -160,7 +162,7 @@ export async function GET(req) {
                                             icon: plugItem.displayProperties.icon,
                                             itemTypeDisplayName: plugItem.itemTypeDisplayName,
                                             description: plugItem.displayProperties.description,
-                                            highlighted: plugItem.plugItemHash === perkHash1 || plugItem.plugItemHash === perkHash2
+                                            highlighted: plugItem.hash === perkHash1 || plugItem.hash === perkHash2
                                         };
                                     }
                                     return null;
