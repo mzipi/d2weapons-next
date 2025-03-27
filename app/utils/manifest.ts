@@ -3,22 +3,24 @@ type ManifestContentPaths = {
 };
 
 type ManifestResponse = {
-    jsonWorldComponentContentPaths: {
-        'es-mx': ManifestContentPaths;
+    Response: {
+        jsonWorldComponentContentPaths: {
+            'es-mx': ManifestContentPaths;
+        };
     };
 };
 
 async function getManifestUrls() {
     try {
         const response = await fetch("https://www.bungie.net/Platform/Destiny2/Manifest/");
-
+        
         if (!response.ok) {
             throw new Error(`Error al obtener el manifiesto: ${response.statusText}`);
         }
-
+        
         const data: ManifestResponse = await response.json(); // Especificamos el tipo aquí
         const contentPaths = data.Response.jsonWorldComponentContentPaths['es-mx'];
-
+        
         if (!contentPaths) {
             throw new Error('No se encontraron rutas de contenido en el manifiesto.');
         }
@@ -44,7 +46,7 @@ async function getManifestUrls() {
                 console.warn(`No se encontró la definición: ${definition}`);
             }
             return acc;
-        }, {} as Record<string, string>); // Usamos Record para asegurar que el objeto tenga claves dinámicas
+        }, {} as Record<string, string>);
 
         return urls;
     } catch (error) {
