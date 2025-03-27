@@ -5,7 +5,7 @@ export function normalizeText(text: string): string {
         .toLowerCase();
 }
 
-export function searchPerk(perkName, items) {
+export function searchPerk(perkName: string, items: Record<string, any>): any {
     normalizeText(perkName);
 
     return Object.values(items).find(item =>
