@@ -6,7 +6,7 @@ export function normalizeText(text) {
 }
 
 export function searchPerk(perkName, items) {
-    const normalizedPerkName = normalizeText(perkName);
+    normalizeText(perkName);
 
     return Object.values(items).find(item =>
         item.displayProperties?.name?.toLowerCase() === perkName.toLowerCase() &&

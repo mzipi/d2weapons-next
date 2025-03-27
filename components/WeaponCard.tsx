@@ -1,3 +1,4 @@
+import Image from "next/image";
 import WeaponSockets from "./WeaponSockets";
 
 export default function WeaponCard({ weapon }) {
@@ -8,9 +9,9 @@ export default function WeaponCard({ weapon }) {
     return (
         <div id="weapon-container">
             <div className="weapon-image-container">
-                <img src={weapon.icon} alt={weapon.name} className="weapon-icon" />
+                <Image src={weapon.icon} alt={weapon.name} className="weapon-icon" />
                 {weapon.iconWatermark && (
-                    <img src={weapon.iconWatermark} alt="watermark" className="weapon-watermark" />
+                    <Image src={weapon.iconWatermark} alt="watermark" className="weapon-watermark" />
                 )}
             </div>
             <strong>{weapon.name}</strong>
