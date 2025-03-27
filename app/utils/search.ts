@@ -15,7 +15,7 @@ interface Item {
     itemType?: number;
     flavorText?: string;
     iconWatermark?: string;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 interface PlugSet {
