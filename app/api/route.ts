@@ -17,12 +17,12 @@ export async function GET(req: Request) {
         const perkItem1 = searchPerk(perkName1, items);
         const perkItem2 = searchPerk(perkName2, items);
 
-        if (perkItem1 === undefined || perkItem2 === undefined) {
+        if (!perkItem1 || !perkItem2) {
             return NextResponse.json({ error: "Perk no encontrado o no es de tier 'Común'" }, { status: 404 });
         }
 
-        const perkHash1: string = String(perkItem1.hash);
-        const perkHash2: string = String(perkItem2.hash);
+        const perkHash1 = perkItem1.hash as number;
+        const perkHash2 = perkItem2.hash as number;
 
         const weaponsWithBothPerks = findWeaponsWithPerks(perkHash1, perkHash2, items, plugSets);
         const filteredWeapons = formatWeapons(weaponsWithBothPerks, items, plugSets, perkHash1, perkHash2);

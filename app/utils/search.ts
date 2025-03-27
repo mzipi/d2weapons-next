@@ -24,6 +24,19 @@ interface PlugSet {
     }>;
 }
 
+interface Perk {
+    name: string;
+    icon: string;
+    itemTypeDisplayName: string;
+    description: string;
+    highlighted: boolean;
+}
+
+interface Socket {
+    itemTypeDisplayName: string;
+    perks: Perk[];
+}
+
 export function normalizeText(text: string): string {
     return text
         .normalize("NFD")
@@ -41,8 +54,8 @@ export function searchPerk(perkName: string, items: Record<string, Item>): Item 
 }
 
 export function findWeaponsWithPerks(
-    perkHash1: string,
-    perkHash2: string,
+    perkHash1: number,
+    perkHash2: number,
     items: Record<string, Item>,
     plugSets: Record<string, PlugSet>
 ): Item[] {
@@ -57,15 +70,10 @@ export function findWeaponsWithPerks(
     });
 }
 
-export function formatWeapons(
-    weapons: Item[],
-    items: Record<string, Item>,
-    plugSets: Record<string, PlugSet>,
-    perkHash1: string,
-    perkHash2: string
-) {
+export function formatWeapons(weapons, items, plugSets, perkHash1, perkHash2) {
     return weapons.map(weapon => {
-        const sockets = [];
+        // Declaramos el tipo explícito de sockets
+        const sockets: Socket[] = [];
 
         if (weapon.sockets?.socketEntries) {
             const filteredSockets = [0, 1, 2, 3, 4, 8]
