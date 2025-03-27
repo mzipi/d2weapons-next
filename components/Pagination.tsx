@@ -1,4 +1,12 @@
-export default function Pagination({ currentPage, total, onPageChange }) {
+import React from 'react';
+
+interface PaginationProps {
+    currentPage: number;
+    total: number;
+    onPageChange: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const Pagination: React.FC<PaginationProps> = ({ currentPage, total, onPageChange }) => {
     return (
         <div id="buttons-container">
             <button
@@ -16,3 +24,5 @@ export default function Pagination({ currentPage, total, onPageChange }) {
         </div>
     );
 }
+
+export default Pagination;
