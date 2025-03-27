@@ -6,13 +6,13 @@ type Weapon = {
     name: string;
     flavorText?: string;
     iconWatermark?: string;
-    sockets?: {
-        itemTypeDisplayName?: string;
+    sockets: {
+        itemTypeDisplayName: string;
         perks: {
             name: string;
             description: string;
             icon: string;
-            highlighted?: boolean;
+            highlighted: boolean;
         }[];
     }[];
 };
