@@ -1,3 +1,15 @@
+type ManifestContentPaths = {
+    [key: string]: string;
+};
+
+type ManifestResponse = {
+    Response: {
+        jsonWorldComponentContentPaths: {
+            'es-mx': ManifestContentPaths;
+        };
+    };
+};
+
 async function getManifestUrls() {
     try {
         const response = await fetch("https://www.bungie.net/Platform/Destiny2/Manifest/");
@@ -6,13 +18,13 @@ async function getManifestUrls() {
             throw new Error(`Error al obtener el manifiesto: ${response.statusText}`);
         }
         
-        const data = await response.json();
+        const data: ManifestResponse = await response.json(); // Especificamos el tipo aquí
         const contentPaths = data.Response.jsonWorldComponentContentPaths['es-mx'];
         
         if (!contentPaths) {
             throw new Error('No se encontraron rutas de contenido en el manifiesto.');
         }
-        
+
         const definitions = [
             // 'DestinyDamageTypeDefinition',
             // 'DestinyEquipmentSlotDefinition',
@@ -26,7 +38,7 @@ async function getManifestUrls() {
             // 'DestinyRewardSourceDefinition',
             // 'DestinySeasonDefinition'
         ];
-        
+
         const urls = definitions.reduce((acc, definition) => {
             if (contentPaths[definition]) {
                 acc[definition] = `https://www.bungie.net${contentPaths[definition]}`;
@@ -34,7 +46,7 @@ async function getManifestUrls() {
                 console.warn(`No se encontró la definición: ${definition}`);
             }
             return acc;
-        }, {});
+        }, {} as Record<string, string>);
 
         return urls;
     } catch (error) {

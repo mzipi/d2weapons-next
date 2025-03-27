@@ -1,6 +1,27 @@
+import Image from "next/image";
 import WeaponSockets from "./WeaponSockets";
 
-export default function WeaponCard({ weapon }) {
+type Weapon = {
+    icon: string;
+    name: string;
+    flavorText?: string;
+    iconWatermark?: string;
+    sockets: {
+        itemTypeDisplayName: string;
+        perks: {
+            name: string;
+            description: string;
+            icon: string;
+            highlighted: boolean;
+        }[];
+    }[];
+};
+
+interface WeaponCardProps {
+    weapon: Weapon;
+}
+
+export default function WeaponCard({ weapon }: WeaponCardProps) {
     if (!weapon) {
         return null;
     }
@@ -8,9 +29,9 @@ export default function WeaponCard({ weapon }) {
     return (
         <div id="weapon-container">
             <div className="weapon-image-container">
-                <img src={weapon.icon} alt={weapon.name} className="weapon-icon" />
+                <Image src={weapon.icon} alt={weapon.name} className="weapon-icon" width={46} height={46} />
                 {weapon.iconWatermark && (
-                    <img src={weapon.iconWatermark} alt="watermark" className="weapon-watermark" />
+                    <Image src={weapon.iconWatermark} alt="watermark" className="weapon-watermark" width={46} height={46} />
                 )}
             </div>
             <strong>{weapon.name}</strong>

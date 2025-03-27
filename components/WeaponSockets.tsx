@@ -1,4 +1,22 @@
-export default function WeaponSockets({ sockets }) {
+import Image from "next/image";
+
+interface Perk {
+    name: string;
+    description: string;
+    highlighted: boolean;
+    icon?: string;
+}
+
+interface Socket {
+    itemTypeDisplayName?: string;
+    perks: Perk[];
+}
+
+interface WeaponSocketsProps {
+    sockets: Socket[];
+}
+
+export default function WeaponSockets({ sockets }: WeaponSocketsProps) {
     if (!sockets || sockets.length === 0) {
         return <p>No tiene sockets con perks aleatorios</p>;
     }
@@ -18,7 +36,7 @@ export default function WeaponSockets({ sockets }) {
                                         <p>{perk.description}</p>
                                     </div>
                                     {perk.icon && (
-                                        <img src={`https://www.bungie.net${perk.icon}`} alt={perk.name} />
+                                        <Image src={`https://www.bungie.net${perk.icon}`} alt={perk.name} width={46} height={46} />
                                     )}
                                 </li>
                             ))

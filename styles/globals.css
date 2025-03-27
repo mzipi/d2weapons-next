@@ -51,6 +51,7 @@ p {
 
 .socket img {
     width: 36px;
+    height: auto;
 }
 
 #search {
