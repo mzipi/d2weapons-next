@@ -6,7 +6,15 @@ type Weapon = {
     name: string;
     flavorText?: string;
     iconWatermark?: string;
-    sockets: any;
+    sockets?: {
+        itemTypeDisplayName?: string;
+        perks: {
+            name: string;
+            description: string;
+            icon: string;
+            highlighted?: boolean;
+        }[];
+    }[];
 };
 
 interface WeaponCardProps {
