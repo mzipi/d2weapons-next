@@ -2,6 +2,7 @@ interface Item {
     displayProperties?: {
         name?: string;
         icon?: string;
+        description?: string;
     };
     inventory?: {
         tierTypeName?: string;
@@ -15,6 +16,7 @@ interface Item {
     itemType?: number;
     flavorText?: string;
     iconWatermark?: string;
+    hash?: number;
     [key: string]: unknown;
 }
 
@@ -70,9 +72,20 @@ export function findWeaponsWithPerks(
     });
 }
 
-export function formatWeapons(weapons, items, plugSets, perkHash1, perkHash2) {
+export function formatWeapons(
+    weapons: Item[],
+    items: Record<string, Item>,
+    plugSets: Record<string, PlugSet>,
+    perkHash1: number,
+    perkHash2: number
+): Array<{
+    name: string;
+    icon: string;
+    flavorText: string;
+    iconWatermark: string | null;
+    sockets: Socket[];
+}> {
     return weapons.map(weapon => {
-        // Declaramos el tipo explícito de sockets
         const sockets: Socket[] = [];
 
         if (weapon.sockets?.socketEntries) {
@@ -99,10 +112,10 @@ export function formatWeapons(weapons, items, plugSets, perkHash1, perkHash2) {
                                     }
 
                                     return {
-                                        name: plugItem.displayProperties.name,
-                                        icon: plugItem.displayProperties.icon,
-                                        itemTypeDisplayName: plugItem.itemTypeDisplayName,
-                                        description: plugItem.displayProperties.description,
+                                        name: plugItem.displayProperties?.name ?? "Desconocido",
+                                        icon: plugItem.displayProperties?.icon ?? "",
+                                        itemTypeDisplayName: plugItem.itemTypeDisplayName ?? "Desconocido",
+                                        description: plugItem.displayProperties?.description ?? "",
                                         highlighted: plugItem.hash === perkHash1 || plugItem.hash === perkHash2
                                     };
                                 }
@@ -120,9 +133,9 @@ export function formatWeapons(weapons, items, plugSets, perkHash1, perkHash2) {
         }
 
         return {
-            name: weapon.displayProperties.name,
-            icon: `https://www.bungie.net${weapon.displayProperties.icon}`,
-            flavorText: weapon.flavorText || "No hay descripción",
+            name: weapon.displayProperties?.name ?? "Desconocido",
+            icon: `https://www.bungie.net${weapon.displayProperties?.icon ?? ''}`,
+            flavorText: weapon.flavorText ?? "No hay descripción",
             iconWatermark: weapon.iconWatermark ? `https://www.bungie.net${weapon.iconWatermark}` : null,
             sockets
         };
