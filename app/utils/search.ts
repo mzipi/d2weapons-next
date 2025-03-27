@@ -20,7 +20,7 @@ interface Item {
 
 interface PlugSet {
     reusablePlugItems: Array<{
-        plugItemHash: string;
+        plugItemHash: number;
     }>;
 }
 
