@@ -1,3 +1,23 @@
+interface Item {
+    displayProperties?: {
+        name?: string;
+        icon?: string;
+    };
+    inventory?: {
+        tierTypeName?: string;
+    };
+    sockets?: {
+        socketEntries?: Array<{
+            reusablePlugSetHash?: string;
+            randomizedPlugSetHash?: string;
+        }>;
+    };
+    itemType?: number;
+    flavorText?: string;
+    iconWatermark?: string;
+    [key: string]: any;
+}
+
 export function normalizeText(text: string): string {
     return text
         .normalize("NFD")
@@ -5,7 +25,7 @@ export function normalizeText(text: string): string {
         .toLowerCase();
 }
 
-export function searchPerk(perkName: string, items: Record<string, any>): any {
+export function searchPerk(perkName: string, items: Record<string, Item>): Item | undefined {
     normalizeText(perkName);
 
     return Object.values(items).find(item =>
@@ -14,9 +34,9 @@ export function searchPerk(perkName: string, items: Record<string, any>): any {
     );
 }
 
-export function findWeaponsWithPerks(perkHash1, perkHash2, items, plugSets) {
+export function findWeaponsWithPerks(perkHash1: string, perkHash2: string, items: Record<string, Item>, plugSets: Record<string, any>): Item[] {
     return Object.values(items).filter(item => {
-        const hasPerks = (slot1, slot2) =>
+        const hasPerks = (slot1: number, slot2: number) =>
             item.sockets?.socketEntries?.[slot1]?.randomizedPlugSetHash &&
             item.sockets?.socketEntries?.[slot2]?.randomizedPlugSetHash &&
             plugSets[item.sockets.socketEntries[slot1].randomizedPlugSetHash]?.reusablePlugItems.some(plug => plug.plugItemHash === perkHash1) &&
