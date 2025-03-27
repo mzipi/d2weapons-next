@@ -6,7 +6,7 @@ export default function WeaponCard({ weapon }) {
     }
 
     return (
-        <div className="weapon">
+        <div id="weapon-container">
             <div className="weapon-image-container">
                 <img src={weapon.icon} alt={weapon.name} className="weapon-icon" />
                 {weapon.iconWatermark && (

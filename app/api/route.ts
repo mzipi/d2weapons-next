@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { loadManifest } from "../utils/manifest.js";
-import { searchPerk, findWeaponsWithPerks, formatWeapons } from "../utils/search.js";
+import { loadManifest } from "../utils/manifest";
+import { searchPerk, findWeaponsWithPerks, formatWeapons } from "../utils/search";
 
 export async function GET(req) {
     try {
