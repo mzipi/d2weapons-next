@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { loadManifest } from "../utils/manifest";
 import { searchPerk, findWeaponsWithPerks, formatWeapons } from "../utils/search";
 
-export async function GET(req) {
+export async function GET(req: Request) {
     try {
         const { searchParams } = new URL(req.url);
         const perkName1 = searchParams.get("perk1");
