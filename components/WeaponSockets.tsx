@@ -1,6 +1,22 @@
 import Image from "next/image";
 
-export default function WeaponSockets({ sockets }) {
+interface Perk {
+    name: string;
+    description: string;
+    highlighted: boolean;
+    icon?: string;
+}
+
+interface Socket {
+    itemTypeDisplayName?: string;
+    perks: Perk[];
+}
+
+interface WeaponSocketsProps {
+    sockets: Socket[];
+}
+
+export default function WeaponSockets({ sockets }: WeaponSocketsProps) {
     if (!sockets || sockets.length === 0) {
         return <p>No tiene sockets con perks aleatorios</p>;
     }
