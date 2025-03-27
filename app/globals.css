@@ -60,7 +60,7 @@ p {
     border-radius: 8px;
     border-style: solid;
     border-width: 0.8px;
-    color: rgb(112, 112, 112);
+    color: white;
     width: 320px;
     height: 36px;
     padding: 8px;
@@ -96,10 +96,44 @@ p {
     display: block;
 }
 
-.highlighted-perk {
-    border-radius: 2px;
-    border: 2px solid gold;
-    background-color: rgba(255, 215, 0, 0.2);
+.highlighted-perk > img {
+    border-radius: 50%;
+    border: 1px solid #369eff;
+    background-color: #0a4481;
     padding: 5px;
     font-weight: bold;
+}
+
+#buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+button {
+    background-color: #0091ff;
+    border: 1px solid transparent;
+    color: white;
+    cursor: pointer;
+    padding: 0 16px;
+    height: 30px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+#weapons-container {
+    height: 900px;
+}
+
+#search-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
