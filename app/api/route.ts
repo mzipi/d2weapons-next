@@ -2,10 +2,6 @@ import { NextResponse } from "next/server";
 import { loadManifest } from "../utils/manifest";
 import { searchPerk, findWeaponsWithPerks, formatWeapons } from "../utils/search";
 
-interface PerkItem {
-    hash: number;
-}
-
 export async function GET(req: Request) {
     try {
         const { searchParams } = new URL(req.url);
@@ -18,10 +14,10 @@ export async function GET(req: Request) {
 
         const { items, plugSets } = await loadManifest();
 
-        const perkItem1 = searchPerk(perkName1, items) as PerkItem;
-        const perkItem2 = searchPerk(perkName2, items) as PerkItem;
+        const perkItem1 = searchPerk(perkName1, items);
+        const perkItem2 = searchPerk(perkName2, items);
 
-        if (!perkItem1 || !perkItem2) {
+        if (perkItem1 === undefined || perkItem2 === undefined) {
             return NextResponse.json({ error: "Perk no encontrado o no es de tier 'Común'" }, { status: 404 });
         }
 
