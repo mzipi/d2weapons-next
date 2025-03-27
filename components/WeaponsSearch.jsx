@@ -80,37 +80,39 @@ export default function WeaponsSearch() {
 
     return (
         <div>
-            <input
-                type="text"
-                placeholder="Rasgo 1"
-                id="search"
-                value={perk1}
-                onChange={(e) => setPerk1(e.target.value)}
-                onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        e.preventDefault();
-                        fetchWeapons();
-                    }
-                }}
-            />
+            <div id="search-container">
+                <input
+                    type="text"
+                    placeholder="Rasgo 1"
+                    id="search"
+                    value={perk1}
+                    onChange={(e) => setPerk1(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            e.preventDefault();
+                            fetchWeapons();
+                        }
+                    }}
+                />
 
-            <input
-                type="text"
-                placeholder="Rasgo 2"
-                id="search"
-                value={perk2}
-                onChange={(e) => setPerk2(e.target.value)}
-                onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        e.preventDefault();
-                        fetchWeapons();
-                    }
-                }}
-            />
+                <input
+                    type="text"
+                    placeholder="Rasgo 2"
+                    id="search"
+                    value={perk2}
+                    onChange={(e) => setPerk2(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            e.preventDefault();
+                            fetchWeapons();
+                        }
+                    }}
+                />
 
-            <button onClick={fetchWeapons} disabled={loading}>
-                {loading ? "Cargando..." : "Buscar"}
-            </button>
+                <button onClick={fetchWeapons} disabled={loading}>
+                    {loading ? "Cargando..." : "Buscar"}
+                </button>
+            </div>
 
             {loading && <p>Cargando...</p>}
 

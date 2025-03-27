@@ -102,26 +102,32 @@ export async function GET(req) {
         const perkItem1 = searchPerk(perkName1, items);
         const perkItem2 = searchPerk(perkName2, items);
 
-        
         if (!perkItem1 || !perkItem2) {
             return NextResponse.json({ error: "Perk no encontrado o no es de tier 'Común'" }, { status: 404 });
         }
-        
+
         const perkHash1 = perkItem1.hash;
         const perkHash2 = perkItem2.hash;
 
+        const weaponsWithBothPerks = Object.values(items).filter(item => {
+            const perkOrder1 = (
+                item.itemType === 3 &&
+                item.sockets?.socketEntries?.[3]?.randomizedPlugSetHash &&
+                item.sockets?.socketEntries?.[4]?.randomizedPlugSetHash &&
+                plugSets[item.sockets.socketEntries[3].randomizedPlugSetHash]?.reusablePlugItems.some(plug => plug.plugItemHash === perkHash1) &&
+                plugSets[item.sockets.socketEntries[4].randomizedPlugSetHash]?.reusablePlugItems.some(plug => plug.plugItemHash === perkHash2)
+            );
         
-        const weaponsWithBothPerks = Object.values(items).filter(item =>
-            item.itemType === 3 &&
-            item.sockets?.socketEntries?.[3]?.randomizedPlugSetHash &&
-            item.sockets?.socketEntries?.[4]?.randomizedPlugSetHash &&
-            plugSets[item.sockets.socketEntries[3].randomizedPlugSetHash]?.reusablePlugItems.some(plug => plug.plugItemHash === perkHash1) &&
-            plugSets[item.sockets.socketEntries[4].randomizedPlugSetHash]?.reusablePlugItems.some(plug => plug.plugItemHash === perkHash2)
-        );
+            const perkOrder2 = (
+                item.itemType === 3 &&
+                item.sockets?.socketEntries?.[3]?.randomizedPlugSetHash &&
+                item.sockets?.socketEntries?.[4]?.randomizedPlugSetHash &&
+                plugSets[item.sockets.socketEntries[4].randomizedPlugSetHash]?.reusablePlugItems.some(plug => plug.plugItemHash === perkHash1) &&
+                plugSets[item.sockets.socketEntries[3].randomizedPlugSetHash]?.reusablePlugItems.some(plug => plug.plugItemHash === perkHash2)
+            );
 
-        if (weaponsWithBothPerks.length === 0) {
-            return NextResponse.json({ error: "No se encontraron armas con este perk" }, { status: 404 });
-        }
+            return perkOrder1 || perkOrder2;
+        });
 
         const filteredWeapons = weaponsWithBothPerks.map(weapon => {
             const sockets = [];
@@ -143,13 +149,21 @@ export async function GET(req) {
                             if (plugSet?.reusablePlugItems) {
                                 const perks = plugSet.reusablePlugItems.map(plug => {
                                     const plugItem = items[plug.plugItemHash];
-                                    return plugItem && plugItem.inventory?.tierTypeName === "Común" ? {
-                                        name: plugItem.displayProperties.name,
-                                        icon: plugItem.displayProperties.icon,
-                                        itemTypeDisplayName: plugItem.itemTypeDisplayName,
-                                        description: plugItem.displayProperties.description,
-                                        highlighted: plug.plugItemHash === perkHash1 || plug.plugItemHash === perkHash2
-                                    } : null;
+
+                                    if (plugItem) {
+                                        if ((index === 3 || index === 4) && plugItem.inventory?.tierTypeName !== "Común") {
+                                            return null;
+                                        }
+
+                                        return {
+                                            name: plugItem.displayProperties.name,
+                                            icon: plugItem.displayProperties.icon,
+                                            itemTypeDisplayName: plugItem.itemTypeDisplayName,
+                                            description: plugItem.displayProperties.description,
+                                            highlighted: plugItem.plugItemHash === perkHash1 || plugItem.plugItemHash === perkHash2
+                                        };
+                                    }
+                                    return null;
                                 }).filter(perk => perk !== null);
 
                                 sockets.push({
@@ -166,10 +180,11 @@ export async function GET(req) {
                 name: weapon.displayProperties.name,
                 icon: `https://www.bungie.net${weapon.displayProperties.icon}`,
                 flavorText: weapon.flavorText || "No hay descripción",
-                iconWatermark: `https://www.bungie.net${weapon.iconWatermark}`,
+                iconWatermark: weapon.iconWatermark ? `https://www.bungie.net${weapon.iconWatermark}` : null,
                 sockets
             };
         });
+
 
         return NextResponse.json({ weapons: filteredWeapons });
     } catch (error) {
